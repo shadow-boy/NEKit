@@ -206,3 +206,8 @@ extension IPAddress: Hashable {
         }
     }
 }
+
+
+public class IPv4Address : IPAddress{
+
+}

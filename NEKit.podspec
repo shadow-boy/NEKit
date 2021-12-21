@@ -22,11 +22,9 @@ Pod::Spec.new do |s|
                        DESC
 
   s.homepage         = 'https://github.com/tospery/NEKit'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'tospery' => 'tospery@gmail.com' }
   s.source           = { :git => 'https://github.com/tospery/NEKit.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.requires_arc = true
   s.static_framework = true
@@ -34,6 +32,15 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '10.0'
 
   s.source_files = 'NEKit/**/*'
+  s.pod_target_xcconfig = { 'OTHER_LDFLAGS' => '-lObjC' }
+  s.library = 'c++'
+  s.xcconfig = {
+       'CLANG_CXX_LANGUAGE_STANDARD' => 'c++11',
+       'CLANG_CXX_LIBRARY' => 'libc++'
+  }
+
+  s.xcconfig = { "HEADER_SEARCH_PATHS" => '"${PODS_ROOT}/Headers/Public/FBSDKShareKit/FBSDKShareKit/FBSDKShareKit" "${PODS_ROOT}/Headers/Public/FBSDKShareKit/FBSDKShareKit" "${PODS_ROOT}/Headers/Public/FBSDKShareKit/"'}
+
 
   s.frameworks = 'UIKit', 'NetworkExtension'
   s.dependency 'CocoaAsyncSocket', '~> 7.6.4'
@@ -41,5 +48,6 @@ Pod::Spec.new do |s|
   s.dependency 'MMDB-Swift', '~> 0.5.1'
   s.dependency 'Yaml', '~> 3.4.4'
   s.dependency 'sodium-ios', '~> 0.0.2'
+  s.dependency 'lwip'
 
 end

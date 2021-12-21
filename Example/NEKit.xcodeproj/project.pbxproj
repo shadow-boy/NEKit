@@ -275,6 +275,7 @@
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/MMDB-Swift/MMDB_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/Yaml/Yaml.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/lwip/lwip.framework/lwip",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -282,6 +283,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDB_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Yaml.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/lwip.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
