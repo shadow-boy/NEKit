@@ -12,7 +12,8 @@ public class IPMutablePacket {
     let IPHeaderLength: Int
     var sourceAddress: IPv4Address {
         get {
-            return IPv4Address(fromBytesInNetworkOrder: payload.bytes.advancedBy(12))
+           
+            return IPv4Address(fromBytesInNetworkOrder: payload.bytes.advanced(by: 12))
         }
         set {
             setIPv4Address(sourceAddress, newAddress: newValue, at: 12)
@@ -20,7 +21,7 @@ public class IPMutablePacket {
     }
     var destinationAddress: IPv4Address {
         get {
-            return IPv4Address(fromBytesInNetworkOrder: payload.bytes.advancedBy(16))
+            return IPv4Address(fromBytesInNetworkOrder: payload.bytes.advanced(by: 16))
         }
         set {
             setIPv4Address(destinationAddress, newAddress: newValue, at: 16)
@@ -34,11 +35,11 @@ public class IPMutablePacket {
         version = IPVersion(rawValue: vl >> 4)!
         IPHeaderLength = Int(vl & 0x0F) * 4
         let p = UnsafePointer<UInt8>(payload.bytes.advancedBy(9)).memory
-        proto = TransportType(rawValue: p)!
+        proto = TransportProtocol(rawValue: p)!
         self.payload = NSMutableData(data: payload)
     }
 
-    func updateChecksum(oldValue: UInt16, newValue: UInt16, type: ChangeType) {
+    func updateChecksum(_ oldValue: UInt16, newValue: UInt16, type: ChangeType) {
         if type == .Address {
             updateChecksum(oldValue, newValue: newValue, at: 10)
         }
@@ -46,7 +47,7 @@ public class IPMutablePacket {
 
     // swiftlint:disable:next variable_name
     internal func updateChecksum(oldValue: UInt16, newValue: UInt16, at: Int) {
-        let oldChecksum = UnsafePointer<UInt16>(payload.bytes.advancedBy(at)).memory
+        let oldChecksum = UnsafePointer<UInt16>(payload.bytes.advanced(by: at)).memory
         let oc32 = UInt32(~oldChecksum)
         let ov32 = UInt32(~oldValue)
         let nv32 = UInt32(newValue)
@@ -67,7 +68,7 @@ public class IPMutablePacket {
     }
 
     // swiftlint:disable:next variable_name
-    private func setIPv4Address(oldAddress: IPv4Address, newAddress: IPv4Address, at: Int) {
+    private func setIPv4Address(_ oldAddress: IPv4Address, newAddress: IPv4Address, at: Int) {
         payload.replaceBytesInRange(NSRange(location: at, length: 4), withBytes: newAddress.bytesInNetworkOrder, length: 4)
             updateChecksum(UnsafePointer<UInt16>(oldAddress.bytesInNetworkOrder).memory, newValue: UnsafePointer<UInt16>(newAddress.bytesInNetworkOrder).memory, type: .Address)
             updateChecksum(UnsafePointer<UInt16>(oldAddress.bytesInNetworkOrder).advancedBy(1).memory, newValue: UnsafePointer<UInt16>(newAddress.bytesInNetworkOrder).advancedBy(1).memory, type: .Address)
