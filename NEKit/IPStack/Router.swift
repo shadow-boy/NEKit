@@ -10,15 +10,15 @@ public class Router {
     //    let IPv6NATRoutes: [UInt16] = []
 
     public init(interfaceIP: String, fakeSourceIP: String, proxyServerIP: String, proxyServerPort: UInt16) {
-        self.interfaceIP = IPv4Address(fromString: interfaceIP)
-        self.fakeSourceIP = IPv4Address(fromString: fakeSourceIP)
-        self.proxyServerIP = IPv4Address(fromString: proxyServerIP)
+        self.interfaceIP = IPv4Address(fromString: interfaceIP)!
+        self.fakeSourceIP = IPv4Address(fromString: fakeSourceIP)!
+        self.proxyServerIP = IPv4Address(fromString: proxyServerIP)!
         self.proxyServerPort = Port(port: proxyServerPort)
     }
 
     public func rewritePacket(packet: IPMutablePacket) -> IPMutablePacket? {
         // Support only TCP as for now
-        guard packet.proto == .TCP else {
+        guard packet.proto == .tcp else {
             return nil
         }
 

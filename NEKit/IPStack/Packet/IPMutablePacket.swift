@@ -31,10 +31,12 @@ public class IPMutablePacket {
     let payload: NSMutableData
 
     public init(payload: NSData) {
+        // 修改为自我实现、不知道对不对
         let vl = UnsafePointer<UInt8>(payload.bytes).memory
+
         version = IPVersion(rawValue: vl >> 4)!
         IPHeaderLength = Int(vl & 0x0F) * 4
-        let p = UnsafePointer<UInt8>(payload.bytes.advancedBy(9)).memory
+        let p = UnsafePointer<UInt8>(payload.bytes.advanced(by: 9)).memory
         proto = TransportProtocol(rawValue: p)!
         self.payload = NSMutableData(data: payload)
     }
@@ -46,7 +48,7 @@ public class IPMutablePacket {
     }
 
     // swiftlint:disable:next variable_name
-    internal func updateChecksum(oldValue: UInt16, newValue: UInt16, at: Int) {
+    internal func updateChecksum(_ oldValue: UInt16, newValue: UInt16, at: Int) {
         let oldChecksum = UnsafePointer<UInt16>(payload.bytes.advanced(by: at)).memory
         let oc32 = UInt32(~oldChecksum)
         let ov32 = UInt32(~oldValue)
